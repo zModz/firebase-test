@@ -11,6 +11,7 @@ import {
 import { app, auth } from "../../firebase/config";
 import { getAuth } from "firebase/auth";
 import styles from "./styles";
+import ProfileScreen from "../ProfileScreen/ProfileScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -18,9 +19,6 @@ function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.listContainer}>
-        {/* <Text>{props.extraData.id}</Text>
-                <Text>{props.extraData.fullName}</Text>
-                <Text>{props.extraData.email}</Text> */}
         <Text>Welcome to the app!</Text>
       </View>
     </View>
@@ -34,6 +32,8 @@ function Communities() {}
 function Settings() {}
 
 export default function HomeScreen(props, { navigation }) {
+  let userData = props.extraData
+
   const [loadedFonts] = useFonts({
     Ionicons: require("../../../assets/fonts/Ionicons.ttf"),
   });
@@ -70,14 +70,13 @@ export default function HomeScreen(props, { navigation }) {
                 marginBottom: 10,
               }}
             />
-            <Text style={{ fontSize: 18 }}>@{props.extraData.fullName}</Text>
+            <Text style={{ fontSize: 18 }}>@{userData.fullName}</Text>
           </View>
           <DrawerItemList {...drops} />
         </DrawerContentScrollView>
         <View
           style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccd" }}
         >
-          <Text>Made with ❤ from Portugal</Text>
           <TouchableOpacity
             onPress={() => signout()}
             style={{ paddingVertical: 15 }}
@@ -87,6 +86,7 @@ export default function HomeScreen(props, { navigation }) {
               <Text style={{ fontSize: 15, marginLeft: 10 }}>Sign Out</Text>
             </View>
           </TouchableOpacity>
+          <Text>Made with ❤ from Portugal</Text>
         </View>
       </View>
     );
@@ -96,7 +96,21 @@ export default function HomeScreen(props, { navigation }) {
     <Drawer.Navigator
       drawerContent={(drops) => <CustomDrawer {...drops} />}
       screenOptions={{ drawerLabelStyle: { marginLeft: -20 } }}
+      initialRouteName="Home"
     >
+      <Drawer.Screen
+        name="Profile"
+        options={{
+          title: "Profile (temp)",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-happy-outline"
+              size={size}
+              color={focused ? "#7cc" : "#ccc"}
+            />
+          ),
+        }}
+      >{(props) => <ProfileScreen {...props} extraData={userData} />}</Drawer.Screen>
       <Drawer.Screen
         name="Home Page"
         component={Home}
