@@ -31,7 +31,7 @@ function Saved() {}
 function Communities() {}
 function Settings() {}
 
-export default function HomeScreen(props, { navigation }) {
+export default function HomeScreen(props) {
   let userData = props.extraData
 
   const [loadedFonts] = useFonts({
@@ -42,13 +42,12 @@ export default function HomeScreen(props, { navigation }) {
     return null;
   }
 
-  const signout = () => {
-    const _auth = getAuth();
+  const signOut = () => {
+    const _auth = getAuth(app);
     auth
       .signOut(_auth)
       .then(() => {
         // Sign-out successful.
-        navigation.navigate("Login");
       })
       .catch((error) => {
         // An error happened.
@@ -78,7 +77,7 @@ export default function HomeScreen(props, { navigation }) {
           style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccd" }}
         >
           <TouchableOpacity
-            onPress={() => signout()}
+            onPress={() => {signOut()}}
             style={{ paddingVertical: 15 }}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -96,12 +95,25 @@ export default function HomeScreen(props, { navigation }) {
     <Drawer.Navigator
       drawerContent={(drops) => <CustomDrawer {...drops} />}
       screenOptions={{ drawerLabelStyle: { marginLeft: -20 } }}
-      initialRouteName="Home"
+      initialRouteName="HomePage"
     >
+      <Drawer.Screen
+        name="HomePage"
+        component={Home}
+        options={{
+          title: "Home",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+            name="md-home-outline"
+            size={size}
+            color={focused ? "#7cc" : "#ccc"}
+            />
+            ),
+          }}
+      />
       <Drawer.Screen
         name="Profile"
         options={{
-          title: "Profile (temp)",
           drawerIcon: ({ focused, size }) => (
             <Ionicons
               name="md-happy-outline"
@@ -111,20 +123,6 @@ export default function HomeScreen(props, { navigation }) {
           ),
         }}
       >{(props) => <ProfileScreen {...props} extraData={userData} />}</Drawer.Screen>
-      <Drawer.Screen
-        name="Home Page"
-        component={Home}
-        options={{
-          title: "Home",
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name="md-home-outline"
-              size={size}
-              color={focused ? "#7cc" : "#ccc"}
-            />
-          ),
-        }}
-      />
       <Drawer.Screen
         name="Explore"
         component={Explore}

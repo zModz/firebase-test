@@ -20,6 +20,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [SignIn, isSignIn] = useState(false);
   const [user, setUser] = useState(null);
 
   if (loading) {
@@ -42,13 +43,15 @@ export default function App() {
             const userData = document.data();
             setLoading(false);
             setUser(userData);
+            isSignIn(true)
           })
           .catch((error) => {
             setLoading(false);
-            console.log("Error getting documents:", error);
+            alert("Error getting documents:", error);
           });
       } else {
         setLoading(false);
+        isSignIn(false)
       }
     });
   }, []);
@@ -56,10 +59,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {user ? (
-          <Stack.Screen name="Home" options={{ headerShown: false }}>
-            {(props) => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
+        {SignIn ? (
+          <>
+            <Stack.Screen name="Home" options={{ headerShown: false }}>
+              {(props) => <HomeScreen {...props} extraData={user} />}
+            </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
