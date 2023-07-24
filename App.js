@@ -23,19 +23,11 @@ export default function App() {
   const [SignIn, isSignIn] = useState(false);
   const [user, setUser] = useState(null);
 
-  if (loading) {
-    // return (
-    //   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //     <ActivityIndicator size="large" />
-    //   </View>
-    // );
-    <></>;
-  }
-
   useEffect(() => {
     const _auth = getAuth(app);
     const db = getFirestore(app);
     auth.onAuthStateChanged(_auth, (user) => {
+      alert("User State Changed!!")
       if (user) {
         const usersRef = getDoc(doc(db, "users", user.uid));
         usersRef
@@ -55,6 +47,14 @@ export default function App() {
       }
     });
   }, []);
+    
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
 
   return (
     <NavigationContainer>
