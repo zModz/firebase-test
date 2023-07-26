@@ -3,15 +3,15 @@ import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useFonts } from "expo-font";
+import { ProfileScreen, SettingsScreen } from '../index'
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { app, auth } from "../../firebase/config";
+import { app, auth } from "../../../firebase/config";
 import { getAuth } from "firebase/auth";
 import styles from "./styles";
-import ProfileScreen from "../ProfileScreen/ProfileScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,13 +29,12 @@ function Explore() {}
 function Notifications() {}
 function Saved() {}
 function Communities() {}
-function Settings() {}
 
 export default function HomeScreen(props) {
   let userData = props.extraData
 
   const [loadedFonts] = useFonts({
-    Ionicons: require("../../../assets/fonts/Ionicons.ttf"),
+    Ionicons: require("../../../../assets/fonts/Ionicons.ttf"),
   });
 
   if (!loadedFonts) {
@@ -61,7 +60,7 @@ export default function HomeScreen(props) {
         <DrawerContentScrollView>
           <View style={{ padding: 20 }}>
             <Image
-              source={require("../../../assets/icon.png")}
+              source={require("../../../../assets/icon.png")}
               style={{
                 height: 80,
                 width: 80,
@@ -121,6 +120,7 @@ export default function HomeScreen(props) {
               color={focused ? "#7cc" : "#ccc"}
             />
           ),
+          headerShown: false,
         }}
       >{(props) => <ProfileScreen {...props} extraData={userData} />}</Drawer.Screen>
       <Drawer.Screen
@@ -177,7 +177,7 @@ export default function HomeScreen(props) {
       />
       <Drawer.Screen
         name="Settings"
-        component={Settings}
+        component={SettingsScreen}
         options={{
           drawerIcon: ({ focused, size }) => (
             <Ionicons

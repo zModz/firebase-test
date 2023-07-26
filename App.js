@@ -8,6 +8,7 @@ import { decode, encode } from "base-64";
 import { app, auth } from "./src/firebase/config";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 if (!global.btoa) {
   global.btoa = encode;
